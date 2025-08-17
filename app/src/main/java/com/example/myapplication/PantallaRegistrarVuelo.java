@@ -1,26 +1,20 @@
 package com.example.myapplication;
 
-import java.util.Scanner;
+import android.content.Context;
+import android.widget.Toast;
 
 public class PantallaRegistrarVuelo {
-    private Scanner scanner;
 
-    public PantallaRegistrarVuelo() {
-        scanner = new Scanner(System.in);
+    public void mostrarFormulario(Context context, String origen, String destino, int distancia) {
+        // Simulación de registro de vuelo
+        String mensaje = "Vuelo registrado: " + origen + " → " + destino + " (" + distancia + " km)";
+        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
     }
 
-    public void mostrarFormulario() {
-        System.out.println("\n--- Registrar Vuelo ---");
-        System.out.print("Código aeropuerto origen: ");
-        String origen = scanner.nextLine();
-        System.out.print("Código aeropuerto destino: ");
-        String destino = scanner.nextLine();
-        System.out.print("Distancia (km): ");
-        int distancia = scanner.nextInt();
-        scanner.nextLine(); // limpiar buffer
-
-        // Aquí normalmente se enviaría a la lógica de negocio (Wentland)
-        System.out.println("Vuelo registrado: " + origen + " → " + destino + " (" + distancia + " km)");
+    // Método de prueba para botones sin datos reales
+    public void mostrarFormulario(Context context) {
+        // Datos de ejemplo
+        mostrarFormulario(context, "DXG", "JFK", 13000);
     }
 }
 
