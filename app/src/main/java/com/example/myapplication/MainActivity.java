@@ -1,25 +1,35 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Instancias de las clases Valeska
+    private PantallaRegistrarVuelo registrarVuelo;
+    private PantallaListarVuelos listarVuelos;
+    private PantallaBuscarVuelos buscarVuelos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        // prueba
+
+        // Inicializar clases Valeska
+        registrarVuelo = new PantallaRegistrarVuelo();
+        listarVuelos = new PantallaListarVuelos();
+        buscarVuelos = new PantallaBuscarVuelos();
+
+        // Encontrar los botones en el layout
+        Button btnRegistrar = findViewById(R.id.btnRegistrarVuelo);
+        Button btnListar = findViewById(R.id.btnListarVuelos);
+        Button btnBuscar = findViewById(R.id.btnBuscarVuelo);
+
+        // Asignar eventos a los botones
+        btnRegistrar.setOnClickListener(v -> registrarVuelo.mostrarFormulario(this));
+        btnListar.setOnClickListener(v -> listarVuelos.mostrarVuelos(this));
+        btnBuscar.setOnClickListener(v -> buscarVuelos.buscarVuelo(this));
     }
 }
