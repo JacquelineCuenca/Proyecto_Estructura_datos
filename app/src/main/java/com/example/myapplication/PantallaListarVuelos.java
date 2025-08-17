@@ -1,13 +1,17 @@
 package com.example.myapplication;
 
-public class PantallaListarVuelos {
-    public void mostrarVuelos() {
-        System.out.println("\n--- Listado de Vuelos ---");
+import android.content.Context;
+import android.widget.Toast;
 
-        // Esto sería dinámico desde la lógica de negocio (Wentland)
-        System.out.println("DXG → JFK (13000 km)");
-        System.out.println("DXG → LHR (9200 km)");
-        System.out.println("JFK → LHR (5500 km)");
+public class PantallaListarVuelos {
+
+    public void mostrarVuelos(Context context) {
+        // Simulación de listado de vuelos
+        String vuelos = "Listado de vuelos:\n" +
+                        "DXG → JFK (13000 km)\n" +
+                        "DXG → LHR (9200 km)\n" +
+                        "JFK → LHR (5500 km)";
+        Toast.makeText(context, vuelos, Toast.LENGTH_LONG).show();
     }
 }
 
