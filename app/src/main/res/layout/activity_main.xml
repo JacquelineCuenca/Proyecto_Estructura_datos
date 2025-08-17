@@ -8,81 +8,62 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Fondo de la pantalla -->
-    <ImageView
-        android:id="@+id/fonfo_inicio"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/fondo_inicio"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-
-    <!-- Textos de bienvenida -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:text="Bienvenido"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="60dp"
+        android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Bienvenido"
-            android:textColor="@android:color/white"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="288dp"
-            android:layout_height="89dp"
-            android:gravity="center"
-            android:text="Aeropuerto Internacional de Daxing"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Menú con los tres botones -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginBottom="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Aeropuerto Internacional de Daxing"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/text1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
 
-        <Button
-            android:id="@+id/btnRegistrarVuelo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Registrar vuelo"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/btnRegistrarVuelo"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Registrar Vuelo"
+        app:layout_constraintTop_toBottomOf="@id/text2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"/>
 
-        <Button
-            android:id="@+id/btnListarVuelos"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Listar vuelos"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/btnListarVuelos"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Listar Vuelos"
+        app:layout_constraintTop_toBottomOf="@id/btnRegistrarVuelo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
-        <Button
-            android:id="@+id/btnBuscarVuelo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Buscar vuelo"
-            android:textSize="20sp"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/btnBuscarVuelo"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Buscar Vuelo"
+        app:layout_constraintTop_toBottomOf="@id/btnListarVuelos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
