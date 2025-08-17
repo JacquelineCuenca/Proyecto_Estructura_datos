@@ -2,12 +2,10 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Instancias de las clases Valeska
     private PantallaRegistrarVuelo registrarVuelo;
     private PantallaListarVuelos listarVuelos;
     private PantallaBuscarVuelos buscarVuelos;
@@ -17,17 +15,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializar clases Valeska
-        registrarVuelo = new PantallaRegistrarVuelo();
-        listarVuelos = new PantallaListarVuelos();
-        buscarVuelos = new PantallaBuscarVuelos();
+        // Instanciar lógica de negocio
+        ControlVuelos control = new ControlVuelos();
 
-        // Encontrar los botones en el layout
+        // Instanciar pantallas
+        registrarVuelo = new PantallaRegistrarVuelo(control);
+        listarVuelos = new PantallaListarVuelos(control);
+        buscarVuelos = new PantallaBuscarVuelos(control);
+
+        // Botones del layout
         Button btnRegistrar = findViewById(R.id.btnRegistrarVuelo);
         Button btnListar = findViewById(R.id.btnListarVuelos);
         Button btnBuscar = findViewById(R.id.btnBuscarVuelo);
 
-        // Asignar eventos a los botones
+        // Eventos
         btnRegistrar.setOnClickListener(v -> registrarVuelo.mostrarFormulario(this));
         btnListar.setOnClickListener(v -> listarVuelos.mostrarVuelos(this));
         btnBuscar.setOnClickListener(v -> buscarVuelos.buscarVuelo(this));
