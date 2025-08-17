@@ -19,7 +19,7 @@ public class PantallaRegistrarVuelo {
         int distancia = scanner.nextInt();
         scanner.nextLine(); // limpiar buffer
 
-        // Aquí normalmente se enviaría a la lógica de negocio (Persona 3)
+        // Aquí normalmente se enviaría a la lógica de negocio (Wentland)
         System.out.println("Vuelo registrado: " + origen + " → " + destino + " (" + distancia + " km)");
     }
 }
