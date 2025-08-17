@@ -1,17 +1,38 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.widget.Toast;
+import com.example.myapplication.modelo.Vuelo;
+import java.util.List;
 
 public class PantallaBuscarVuelos {
 
+    private ControlVuelos control;
+
+    public PantallaBuscarVuelos(ControlVuelos control) {
+        this.control = control;
+    }
+
     public void buscarVuelo(Context context) {
-        // Simulación de búsqueda
+        // Ejemplo fijo; más adelante se puede usar EditText para ingresar origen/destino
         String origen = "DXG";
         String destino = "LHR";
-        String mensaje = "Buscando vuelo de " + origen + " a " + destino + "...\n" +
-                         "Ruta encontrada: " + origen + " → " + destino + " (simulado)";
-        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+
+        List<Vuelo> resultados = control.buscarVuelo(origen, destino);
+        StringBuilder sb = new StringBuilder();
+        if (resultados.isEmpty()) {
+            sb.append("No se encontraron vuelos");
+        } else {
+            for (Vuelo v : resultados) {
+                sb.append(v.toString()).append("\n");
+            }
+        }
+
+        new AlertDialog.Builder(context)
+                .setTitle("Resultados de búsqueda")
+                .setMessage(sb.toString())
+                .setPositiveButton("OK", null)
+                .show();
     }
 }
 
