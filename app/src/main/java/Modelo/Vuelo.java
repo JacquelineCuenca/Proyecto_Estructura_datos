@@ -19,7 +19,7 @@ public class Vuelo {
 
     // Getters
     public Aeropuerto getOrigen() {
-        return origen;
+        return partida;
     }
 
     public Aeropuerto getDestino() {
