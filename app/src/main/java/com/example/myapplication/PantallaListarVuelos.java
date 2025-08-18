@@ -2,7 +2,9 @@ package com.example.myapplication;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import com.example.myapplication.modelo.Vuelo;
+
+import Modelo.Vuelo;
+
 
 public class PantallaListarVuelos {
 

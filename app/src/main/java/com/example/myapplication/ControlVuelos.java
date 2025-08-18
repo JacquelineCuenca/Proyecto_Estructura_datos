@@ -1,9 +1,11 @@
 package com.example.myapplication;
 
-import com.example.myapplication.modelo.Aeropuerto;
-import com.example.myapplication.modelo.Vuelo;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import Modelo.Aeropuerto;
+import Modelo.Vuelo;
 
 public class ControlVuelos {
 
