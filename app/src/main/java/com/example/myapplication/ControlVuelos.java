@@ -50,7 +50,7 @@ public class ControlVuelos {
         List<Vuelo> resultado = new ArrayList<>();
         for (Vuelo v : vuelos) {
             if (v.getOrigen().getCodigo().equalsIgnoreCase(origenCodigo) &&
-                v.getDestino().getCodigo().equalsIgnoreCase(destinoCodigo)) {
+                    v.getDestino().getCodigo().equalsIgnoreCase(destinoCodigo)) {
                 resultado.add(v);
             }
         }

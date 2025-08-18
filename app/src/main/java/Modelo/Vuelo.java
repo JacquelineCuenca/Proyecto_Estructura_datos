@@ -1,34 +1,42 @@
 package Modelo;
 
+import java.util.Date;
+
 public class Vuelo {
-        private Aeropuerto origen;
-        private Aeropuerto destino;
-        private int distancia;
+    private Aeropuerto partida;
+    private Aeropuerto destino;
+    private Date horaInicio;
+    private Date horaFin;
 
-        // Constructor
-        public Vuelo(Aeropuerto origen, Aeropuerto destino, int distancia) {
-            this.origen = origen;
-            this.destino = destino;
-            this.distancia = distancia;
-        }
 
-        // Getters
-        public Aeropuerto getOrigen() {
-            return origen;
-        }
+    // Constructor
+    public Vuelo(Aeropuerto partida, Aeropuerto destino, Date horaInicio, Date horaFin) {
+        this.partida = partida;
+        this.destino = destino;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+    }
 
-        public Aeropuerto getDestino() {
-            return destino;
-        }
+    // Getters
+    public Aeropuerto getOrigen() {
+        return origen;
+    }
 
-        public int getDistancia() {
-            return distancia;
-        }
+    public Aeropuerto getDestino() {
+        return destino;
+    }
 
-        // Método toString para representación en texto
-        @Override
-        public String toString() {
-            return "Vuelo de " + origen + " a " + destino + " - Distancia: " + distancia + " km";
-        }
+    public Date getHoraInicio() {
+        return horaInicio;
+    }
+    public Date getHoraFin() {
+        return horaFin;
+    }
+
+    // Método toString para representación en texto
+    @Override
+    public String toString() {
+        return partida + " -> " + destino + " | " + horaInicio + " - " + horaFin;
+    }
 
 }

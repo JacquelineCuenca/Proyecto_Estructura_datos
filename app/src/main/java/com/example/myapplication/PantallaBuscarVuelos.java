@@ -3,7 +3,6 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.content.Context;
 import java.util.List;
-
 import Modelo.Vuelo;
 
 public class PantallaBuscarVuelos {
