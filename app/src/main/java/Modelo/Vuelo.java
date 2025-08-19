@@ -18,7 +18,7 @@ public class Vuelo {
     }
 
     // Getters
-    public Aeropuerto getOrigen() {
+    public Aeropuerto getPartida() {
         return partida;
     }
 
