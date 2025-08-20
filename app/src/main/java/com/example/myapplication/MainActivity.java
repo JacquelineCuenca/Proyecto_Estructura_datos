@@ -1,36 +1,29 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PantallaRegistrarVuelo registrarVuelo;
-    private PantallaListarVuelos listarVuelos;
-    private PantallaBuscarVuelos buscarVuelos;
+    private Button btn_ingresar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Instanciar lógica de negocio
-        ControlVuelos control = new ControlVuelos();
+        // Inicializar el botón
+        btn_ingresar = findViewById(R.id.btnIngresar);
+        // Configurar el evento de clic del botón
+        btn_ingresar.setOnClickListener(view -> {
+            // Iniciar la actividad Pantalla_Menu
+            Intent intent = new Intent(MainActivity.this, Pantalla_Menu.class);
+            startActivity(intent);
+        });
 
-        // Instanciar pantallas
-        registrarVuelo = new PantallaRegistrarVuelo(control);
-        listarVuelos = new PantallaListarVuelos(control);
-        buscarVuelos = new PantallaBuscarVuelos(control);
 
-        // Botones del layout
-        Button btnRegistrar = findViewById(R.id.btnRegistrarVuelo);
-        Button btnListar = findViewById(R.id.btnListarVuelos);
-        Button btnBuscar = findViewById(R.id.btnBuscarVuelo);
 
-        // Eventos
-        btnRegistrar.setOnClickListener(v -> registrarVuelo.mostrarFormulario(this));
-        btnListar.setOnClickListener(v -> listarVuelos.mostrarVuelos(this));
-        btnBuscar.setOnClickListener(v -> buscarVuelos.buscarVuelo(this));
     }
 }
