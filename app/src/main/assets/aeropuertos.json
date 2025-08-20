@@ -1,0 +1,12 @@
+[
+  { "codigo": "PKX", "nombre": "Aeropuerto Internacional de Daxing" },
+  { "codigo": "PEK", "nombre": "Aeropuerto Internacional de Pekín-Capital" },
+  { "codigo": "LHR", "nombre": "Aeropuerto de Heathrow" },
+  { "codigo": "JFK", "nombre": "Aeropuerto Internacional John F. Kennedy" },
+  { "codigo": "CDG", "nombre": "Aeropuerto Charles de Gaulle" },
+  { "codigo": "HND", "nombre": "Aeropuerto Internacional de Haneda" },
+  { "codigo": "DXB", "nombre": "Aeropuerto Internacional de Dubái" },
+  { "codigo": "LAX", "nombre": "Aeropuerto Internacional de Los Ángeles" },
+  { "codigo": "FRA", "nombre": "Aeropuerto de Fráncfort" },
+  { "codigo": "MAD", "nombre": "Aeropuerto Adolfo Suárez Madrid-Barajas" }
+]
