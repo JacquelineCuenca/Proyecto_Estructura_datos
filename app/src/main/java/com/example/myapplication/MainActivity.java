@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button btn_ingresar;
-
+    Button btnAddAirport, btnRemoveAirport, btnAddFlight, btnRemoveFlight, btnFindRoute, btnStats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +21,14 @@ public class MainActivity extends AppCompatActivity {
             // Iniciar la actividad Pantalla_Menu
             Intent intent = new Intent(MainActivity.this, Pantalla_Menu.class);
             startActivity(intent);
+
+
         });
+
+
+
+
+
 
 
 
