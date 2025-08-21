@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -16,5 +17,10 @@ public class Pantalla_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_menu);
 
+        Button btnRedVuelos = findViewById(R.id.btnRedVuelos);
+        btnRedVuelos.setOnClickListener(view -> {
+            Intent intent = new Intent(Pantalla_Menu.this, Red_vuelos.class);
+            startActivity(intent);
+        });
     }
 }

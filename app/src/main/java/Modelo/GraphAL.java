@@ -121,5 +121,14 @@ public class GraphAL<V, E> {
     }
 
 
+    // Método para obtener para obtener la lista de contenidos de los vértices
+    public List<V> getVerticesContents() {
+        List<V> contents = new ArrayList<>();
+        for (Vertex<V, E> v : vertices) {
+            contents.add(v.getContent());
+        }
+        return contents;
+    }
+
 }
 
