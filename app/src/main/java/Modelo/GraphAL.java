@@ -27,7 +27,7 @@ public class GraphAL<V, E> {
     }
 
     // metodo auxiliar para encontrar un vertice por su contenido
-    private Vertex<V, E> findVertex(V content) {
+    public Vertex<V, E> findVertex(V content) {
         for (Vertex<V, E> v : vertices) {
             V c = v.getContent();
             if (this.cmp.compare(c, content) == 0) {

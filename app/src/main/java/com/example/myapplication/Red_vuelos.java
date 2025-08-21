@@ -12,5 +12,10 @@ public class Red_vuelos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_vuelos);
 
+        // Inicializar el grafo si no está listo
+        DataRepository.inicializar(this);
+
+        GrafoView grafoView = findViewById(R.id.grafoView);
+        grafoView.setGrafo(DataRepository.getGrafoVuelos());
     }
 }
