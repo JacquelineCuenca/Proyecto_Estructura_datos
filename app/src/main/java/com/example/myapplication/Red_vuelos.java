@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import Modelo.GrafoView;
 import Modelo.DataRepository;
@@ -17,5 +17,9 @@ public class Red_vuelos extends AppCompatActivity {
 
         GrafoView grafoView = findViewById(R.id.grafoView);
         grafoView.setGrafo(DataRepository.getGrafoVuelos());
+
+        // Botón regresar
+        Button btnRegresar = findViewById(R.id.btnRegresar);
+        btnRegresar.setOnClickListener(v -> finish());
     }
 }
