@@ -2,6 +2,7 @@ package Modelo;
 
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.*;
 
 public class GraphAL<V, E> {
     private LinkedList<Vertex<V, E>> vertices;
@@ -74,7 +75,51 @@ public class GraphAL<V, E> {
         }
     }
 
-    // para ruta mas corta
+    // Este método encuentra la ruta más corta entre dos aeropuertos usando el peso de las aristas (duración del vuelo).
+    public List<V> dijkstra(V origen, V destino) {
+        Map<V, Integer> dist = new HashMap<>();
+        Map<V, V> prev = new HashMap<>();
+        Set<V> visitados = new HashSet<>();
+        PriorityQueue<V> cola = new PriorityQueue<>(Comparator.comparingInt(dist::get));
+
+        for (Vertex<V, E> v : vertices) {
+            dist.put(v.getContent(), Integer.MAX_VALUE);
+            prev.put(v.getContent(), null);
+        }
+        dist.put(origen, 0);
+        cola.add(origen);
+
+        while (!cola.isEmpty()) {
+            V actual = cola.poll();
+            if (visitados.contains(actual)) continue;
+            visitados.add(actual);
+
+            Vertex<V, E> vActual = findVertex(actual);
+            if (vActual == null) continue;
+
+            for (Edge<E, V> e : vActual.getEdges()) {
+                V vecino = e.getTarget().getContent();
+                int peso = e.getWeight();
+                int nuevaDist = dist.get(actual) + peso;
+                if (nuevaDist < dist.get(vecino)) {
+                    dist.put(vecino, nuevaDist);
+                    prev.put(vecino, actual);
+                    cola.add(vecino);
+                }
+            }
+        }
+
+        // Reconstruir el camino
+        List<V> camino = new LinkedList<>();
+        for (V at = destino; at != null; at = prev.get(at)) {
+            camino.add(0, at);
+        }
+        if (camino.isEmpty() || !camino.get(0).equals(origen)) {
+            return Collections.emptyList(); // No hay camino
+        }
+        return camino;
+    }
+
 
 }
 
