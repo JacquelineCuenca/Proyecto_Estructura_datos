@@ -38,50 +38,8 @@
             android:gravity="center_horizontal"
             android:padding="32dp">
 
-            <Button
-                android:id="@+id/btnAddAirport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Añadir Aeropuerto" />
-
-            <Button
-                android:id="@+id/btnRemoveAirport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Eliminar Aeropuerto"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:id="@+id/btnAddFlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Añadir Vuelo"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:id="@+id/btnRemoveFlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Eliminar Vuelo"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:id="@+id/btnFindRoute"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Buscar Ruta"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:id="@+id/btnStats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ver Estadísticas"
-                android:layout_marginTop="10dp"/>
 
             <!-- imagen -->
-
-
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="185dp"
@@ -124,17 +82,43 @@
                 app:iconTint="@android:color/white" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddAirport"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/textColorTertiary"
+                android:icon="@android:drawable/ic_menu_mapmode"
+                android:text="Añadir Aeropuerto"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:cornerRadius="24dp"
+                app:iconTint="@android:color/white"  />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarAeropuertos"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="?android:attr/textColorTertiary"
                 android:icon="@android:drawable/ic_menu_mapmode"
-                android:text="Editar Aeropuertos"
+                android:text="Aeropuertos Actuales"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 app:cornerRadius="24dp"
                 app:iconTint="@android:color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddFlight"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/textColorTertiary"
+                android:icon="@android:drawable/ic_menu_mapmode"
+                android:text="Añadir Vuelo"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:cornerRadius="24dp"
+                app:iconTint="@android:color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarVuelos"
@@ -143,18 +127,39 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="?android:attr/textColorTertiary"
                 android:icon="@android:drawable/ic_menu_mapmode"
-                android:text="Editar Vuelos"
+                android:text="Vuelos Actuales"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 app:cornerRadius="24dp"
                 app:iconTint="@android:color/white" />
-            <Button
-                android:id="@+id/btnRedVuelos"
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFindRoute"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Red de Vuelos"
-                android:layout_marginBottom="10dp"
-                tools:ignore="DuplicateIds" />
+                android:backgroundTint="?android:attr/textColorTertiary"
+                android:icon="@android:drawable/ic_menu_mapmode"
+                android:text="Buscar Rutas"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:cornerRadius="24dp"
+                app:iconTint="@android:color/white"/>
+
+            <!--
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStats"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/textColorTertiary"
+                android:icon="@android:drawable/ic_menu_mapmode"
+                android:text="Ver Estadísticas"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:cornerRadius="24dp"
+                app:iconTint="@android:color/white"/>
+
 
             <Button
                 android:id="@+id/btnAddAirport"
@@ -203,7 +208,7 @@
                 android:text="Ver Estadísticas"
                 android:layout_marginBottom="10dp"
                 tools:ignore="DuplicateIds" />
-
+                -->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
