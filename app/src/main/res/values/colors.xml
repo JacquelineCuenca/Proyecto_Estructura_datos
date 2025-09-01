@@ -5,6 +5,9 @@
     <color name="verde">#009688</color>
     <color name="transparente">#00FFFFFF</color>
     <color name="regresar">#828282</color>
+    <color name="object">#E9E9E9</color>
+    <color name="delete">#FF3535</color>
+    <color name="purple_500">#9050EB</color>
 
     <color name="morado">#886AC8</color>
     <color name="morado_transparente">#AA800080</color>

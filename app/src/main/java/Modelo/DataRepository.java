@@ -8,11 +8,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -24,14 +26,23 @@ public class DataRepository {
     private static Map<String, Aeropuerto> aeropuertosMap;
     private static List<Aeropuerto> listaAeropuertos;
 
+    private static List<Vuelo> listaVuelos;
+
     public static void inicializar(Context context) {
-        if (grafoVuelos != null) return; // Ya inicializado
+        if (grafoVuelos != null) return;
+
+        if (listaAeropuertos == null) {
+            leerAeropuertos(context);
+        }
+        if (listaVuelos == null) {
+            leerVuelos(context);
+        }
 
         grafoVuelos = new GraphAL<>(true, Comparator.comparing(Aeropuerto::getCodigo));
         aeropuertosMap = new HashMap<>();
         listaAeropuertos = new ArrayList<>();
+        listaVuelos = new ArrayList<>();
         try {
-            // Leer aeropuertos
             AssetManager am = context.getAssets();
             InputStream is = am.open("aeropuertos.json");
             byte[] buffer = new byte[is.available()];
@@ -47,7 +58,6 @@ public class DataRepository {
                 aeropuertosMap.put(a.getCodigo(), a);
             }
 
-            // Leer vuelos
             is = am.open("vuelos.json");
             buffer = new byte[is.available()];
             is.read(buffer);
@@ -58,121 +68,297 @@ public class DataRepository {
                 JSONObject obj = arrVuelos.getJSONObject(i);
                 Aeropuerto partida = aeropuertosMap.get(obj.getString("partida"));
                 Aeropuerto destino = aeropuertosMap.get(obj.getString("destino"));
-                // Aquí puedes parsear las fechas si lo necesitas
                 Vuelo vuelo = new Vuelo(partida, destino, null, null);
-                grafoVuelos.connect(partida, destino, 1, vuelo); // Peso 1 por defecto
+                listaVuelos.add(vuelo);
+                grafoVuelos.connect(partida, destino, 1, vuelo);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void agregarAeropuerto(Aeropuerto aeropuerto, Context context) {
-        try {
-            if (grafoVuelos == null) {
-                System.err.println("Error: Grafo de vuelos no inicializado. Llama a inicializar() primero.");
-                return;
+    public static void actualizarAeropuerto(String codigoOriginal, Aeropuerto aeropuertoNuevo, Context context){
+        List<Aeropuerto> lista = leerAeropuertos(context);
+
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getCodigo().equalsIgnoreCase(codigoOriginal)) {
+                lista.set(i, aeropuertoNuevo);
+                break;
             }
-            if (!aeropuertosMap.containsKey(aeropuerto.getCodigo())) {
-                grafoVuelos.addVertex(aeropuerto);
-                aeropuertosMap.put(aeropuerto.getCodigo(), aeropuerto);
-                listaAeropuertos.add(aeropuerto);
-                agregarAeropuertoAJson(aeropuerto, context); // Persistir en JSON
-            } else {
-                System.out.println("El aeropuerto con código " + aeropuerto.getCodigo() + " ya existe.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+        escribirArchivoAeropuerto(convertirAeropuertoJson(lista).toString(), context);
+
+        listaAeropuertos = lista;
+        aeropuertosMap.put(aeropuertoNuevo.getCodigo(), aeropuertoNuevo);
     }
 
-    public static void agregarAeropuertoAJson(Aeropuerto aeropuerto, Context context) {
-        try {
-            File aeropuertosFile = new File(context.getFilesDir(), "aeropuertos.json");
-            JSONArray arrAeropuertos;
+    public static void actualizarVuelo(Vuelo vueloOriginal, Vuelo vueloNuevo, Context context) {
+        if (listaVuelos == null) return;
 
-            if (aeropuertosFile.exists()) {
-                InputStream is = context.openFileInput("aeropuertos.json");
-                String jsonString = convertStreamToString(is);
-                is.close();
-                arrAeropuertos = new JSONArray(jsonString);
-            } else {
-                arrAeropuertos = new JSONArray();
+        for (int i = 0; i < listaVuelos.size(); i++) {
+            Vuelo v = listaVuelos.get(i);
+            if (v.equals(vueloOriginal)) { // compara referencias o puedes implementar equals() en Vuelo
+                listaVuelos.set(i, vueloNuevo);
+                break;
+            }
+        }
+
+        try {
+            JSONArray arrVuelos = new JSONArray();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
+            for (Vuelo v : listaVuelos) {
+                JSONObject obj = new JSONObject();
+                obj.put("partida", v.getPartida().getCodigo());
+                obj.put("destino", v.getDestino().getCodigo());
+                obj.put("horaInicio", sdf.format(v.getHoraInicio()));
+                obj.put("horaFin", sdf.format(v.getHoraFin()));
+                arrVuelos.put(obj);
             }
 
-            JSONObject newAeropuertoJson = new JSONObject();
-            newAeropuertoJson.put("codigo", aeropuerto.getCodigo());
-            newAeropuertoJson.put("nombre", aeropuerto.getNombre());
-
-            arrAeropuertos.put(newAeropuertoJson);
-
-            FileOutputStream fos = context.openFileOutput("aeropuertos.json", Context.MODE_PRIVATE);
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            writer.write(arrAeropuertos.toString(4)); // toString(4) para formato legible
-            writer.close();
+            String json = arrVuelos.toString(4);
+            FileOutputStream fos = context.openFileOutput("vuelos.json", Context.MODE_PRIVATE);
+            fos.write(json.getBytes());
             fos.close();
 
-            System.out.println("Aeropuerto agregado al JSON: " + newAeropuertoJson.toString());
-
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void agregarVuelo(Vuelo vuelo, Context context) {
+
+
+    public static void guardarAeropuerto(Aeropuerto aeropuerto, Context context){
+        List<Aeropuerto> lista;
+        File file = new File(context.getFilesDir(), "aeropuertos.json");
+        if(!file.exists()){
+            lista = getAeropuertos();
+        } else {
+            lista = leerAeropuertos(context);
+        }
+
+        lista.add(aeropuerto);
+
+        escribirArchivoAeropuerto(convertirAeropuertoJson(lista).toString(), context);
+
+        listaAeropuertos = lista;
+        aeropuertosMap.put(aeropuerto.getCodigo(), aeropuerto);
+    }
+
+
+    public static void guardarVuelo(Vuelo vuelo, Context context){
         try{
-            if (grafoVuelos == null) {
-                System.err.println("Error: Grafo de vuelos no inicializado. Llama a inicializar() primero.");
-                return;
+            if (listaVuelos == null) {
+                listaVuelos = new ArrayList<>();
             }
-            grafoVuelos.connect(vuelo.getPartida(), vuelo.getDestino(), 1, vuelo);
-            agregarVueloAJson(vuelo, context);
+
+            listaVuelos.add(vuelo);
+
+            if(grafoVuelos != null){
+                grafoVuelos.connect(vuelo.getPartida(), vuelo.getDestino(), 1, vuelo);
+            }
+
+            JSONArray arrVuelos = new JSONArray();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+            for (Vuelo v : listaVuelos) {
+                JSONObject obj = new JSONObject();
+                obj.put("partida", v.getPartida().getCodigo());
+                obj.put("destino", v.getDestino().getCodigo());
+                obj.put("fechaInicio", sdf.format(v.getHoraInicio()));
+                obj.put("fechaFin", sdf.format(v.getHoraFin()));
+                arrVuelos.put(obj);
+            }
+
+            String json = arrVuelos.toString(4);
+            FileOutputStream fos = context.openFileOutput("vuelos.json", Context.MODE_PRIVATE);
+            fos.write(json.getBytes());
+            fos.close();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static void agregarVueloAJson(Vuelo vuelo, Context context) throws JSONException {
-        try {
-            File vuelosFile = new File(context.getFilesDir(), "vuelos.json");
-            JSONArray arrVuelos;
 
-            if (vuelosFile.exists()) {
-                InputStream is = context.openFileInput("vuelos.json");
-                String jsonString = convertStreamToString(is);
-                is.close();
-                arrVuelos = new JSONArray(jsonString);
-            } else {
-                arrVuelos = new JSONArray();
+    public static void eliminarAeropuerto(Aeropuerto aeropuerto, Context context){
+        List<Aeropuerto> lista = leerAeropuertos(context);
+
+        lista.removeIf(a -> a.getCodigo().equalsIgnoreCase(aeropuerto.getCodigo()));
+        escribirArchivoAeropuerto(convertirAeropuertoJson(lista).toString(), context);
+        listaAeropuertos = lista;
+        aeropuertosMap.clear();
+        for (Aeropuerto a : lista) {
+            aeropuertosMap.put(a.getCodigo(), a);
+        }
+    }
+
+    public static void eliminarVuelo(Vuelo vuelo, Context context) {
+        if (listaVuelos == null) return;
+
+        listaVuelos.remove(vuelo);
+
+        try {
+            JSONArray arrVuelos = new JSONArray();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
+            for (Vuelo v : listaVuelos) {
+                JSONObject obj = new JSONObject();
+                obj.put("partida", v.getPartida().getCodigo());
+                obj.put("destino", v.getDestino().getCodigo());
+                obj.put("horaInicio", sdf.format(v.getHoraInicio()));
+                obj.put("horaFin", sdf.format(v.getHoraFin()));
+                arrVuelos.put(obj);
             }
 
-            JSONObject newVueloJson = new JSONObject();
-            newVueloJson.put("partida", vuelo.getPartida().getCodigo());
-            newVueloJson.put("destino", vuelo.getDestino().getCodigo());
-
-            arrVuelos.put(newVueloJson);
-
+            String json = arrVuelos.toString(4);
             FileOutputStream fos = context.openFileOutput("vuelos.json", Context.MODE_PRIVATE);
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            writer.write(arrVuelos.toString(4));
-            writer.close();
+            fos.write(json.getBytes());
             fos.close();
 
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-    }
-    private static String convertStreamToString(InputStream is) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line).append('\n');
+
+
+    public static List<Aeropuerto> leerAeropuertos(Context context){
+        List<Aeropuerto> lista = new ArrayList<>();
+        File file = new File(context.getFilesDir(), "aeropuertos.json");
+        StringBuilder contenido = new StringBuilder();
+        try{
+            InputStream is;
+            if(file.exists()){
+                is = new FileInputStream(file);
+            } else {
+                // Copiar desde assets
+                is = context.getAssets().open("aeropuertos.json");
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String linea;
+            while((linea = br.readLine()) != null){
+                contenido.append(linea);
+            }
+            br.close();
+            is.close();
+
+            JSONArray array = new JSONArray(contenido.toString());
+            for(int i = 0; i<array.length(); i++){
+                JSONObject aeropuerto = array.getJSONObject(i);
+                String nombre = aeropuerto.getString("nombre");
+                String codigo = aeropuerto.getString("codigo");
+                lista.add(new Aeropuerto(codigo, nombre));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
         }
-        reader.close();
-        return sb.toString();
+        return lista;
     }
+
+
+    public static void leerVuelos(Context context){
+        try{
+            File file = new File(context.getFilesDir(), "vuelos.json");
+            if(!file.exists()) return;
+
+            FileInputStream fis = context.openFileInput("vuelos.json");
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+
+            String jsonVuelos = new String(buffer, StandardCharsets.UTF_8);
+            JSONArray arrVuelos = new JSONArray(jsonVuelos);
+            listaVuelos = new ArrayList<>();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
+            for(int i = 0; i<arrVuelos.length(); i++){
+                JSONObject obj = arrVuelos.getJSONObject(i);
+                Aeropuerto partida = aeropuertosMap.get(obj.getString("partida"));
+                Aeropuerto destino = aeropuertosMap.get(obj.getString("destino"));
+                Date fechaInicio = sdf.parse(obj.getString("horaInicio"));
+                Date fechaFin = sdf.parse(obj.getString("horaFin"));
+
+                Vuelo vuelo = new Vuelo(partida, destino, fechaInicio, fechaFin);
+                listaVuelos.add(vuelo);
+
+                grafoVuelos.connect(partida, destino, 1, vuelo);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static JSONArray convertirAeropuertoJson(List<Aeropuerto> lista){
+        JSONArray array = new JSONArray();
+        for(Aeropuerto a: lista){
+            try{
+                JSONObject obj = new JSONObject();
+                obj.put("codigo", a.getCodigo());
+                obj.put("nombre", a.getNombre());
+                array.put(obj);
+            }catch (JSONException e){
+                    e.printStackTrace();
+            }
+        }
+        return  array;
+    }
+
+    public static void escribirArchivoAeropuerto(String data, Context context){
+        try{
+            FileOutputStream fos = context.openFileOutput("aeropuertos.json", Context.MODE_PRIVATE);
+            fos.write(data.getBytes());
+            fos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void resetAirportsData(Context context) {
+        try {
+            InputStream is = context.getAssets().open("aeropuertos.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            FileOutputStream fos = context.openFileOutput("aeropuertos.json", Context.MODE_PRIVATE);
+            fos.write(buffer);
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void resetVuelosData(Context context) {
+        try {
+            InputStream is = context.getAssets().open("vuelos.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            FileOutputStream fos = context.openFileOutput("vuelos.json", Context.MODE_PRIVATE);
+            fos.write(buffer);
+            fos.close();
+
+            if (listaVuelos != null) listaVuelos.clear();
+            leerVuelos(context);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     public static GraphAL<Aeropuerto, Vuelo> getGrafoVuelos() {
         return grafoVuelos;
@@ -185,4 +371,9 @@ public class DataRepository {
     public static List<Aeropuerto> getAeropuertos() {
         return new ArrayList<>(listaAeropuertos);
     }
+
+    public static List<Vuelo> getVuelos(){
+        return listaVuelos;
+    }
+
 }

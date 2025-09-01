@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomDialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowMinWidthMajor">80%</item> <!-- ancho del popup -->
+        <item name="android:windowMinWidthMinor">80%</item>
+        <item name="android:backgroundDimEnabled">true</item> <!-- oscurece fondo -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+</resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,9 +24,7 @@ public class AddAirportActivity extends AppCompatActivity {
 
         btnRegresarMenu = findViewById(R.id.btnRegresarAddAeropuerto);
         btnRegresarMenu.setOnClickListener(view -> {
-            // Iniciar la actividad Pantalla_Menu
-            Intent intent = new Intent(AddAirportActivity.this, Pantalla_Menu.class);
-            startActivity(intent);
+            finish();
         });
 
         btnAnadir = findViewById(R.id.btnAnadirAeropuerto);
@@ -36,13 +35,18 @@ public class AddAirportActivity extends AppCompatActivity {
                 nombre.setText("");
                 codigo.setText("");
                 setResult(Activity.RESULT_OK);
+                Toast.makeText(this, "Aeropuerto agregado", Toast.LENGTH_SHORT).show();
                 finish();
+            } else {
+                Toast.makeText(this, "Llenar todos los campos", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void addAirport(String nombre, String codigo) {
         Aeropuerto aeropuerto = new Aeropuerto(codigo, nombre);
-        DataRepository.agregarAeropuerto(aeropuerto, AddAirportActivity.this);
+        DataRepository.guardarAeropuerto(aeropuerto, this);
     }
 }
